@@ -1,37 +1,681 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Eloise's Website</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eloise | Personal Website</title>
+  <style>
+    :root {
+      --bg: #f6f0e8;
+      --bg-soft: #fbf7f2;
+      --card: rgba(255, 255, 255, 0.72);
+      --text: #2f2823;
+      --muted: #7a6e63;
+      --line: rgba(92, 78, 67, 0.12);
+      --accent: #b79273;
+      --accent-deep: #8e6f54;
+      --shadow: 0 18px 50px rgba(68, 48, 35, 0.08);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff8f0 0%, transparent 30%),
+        radial-gradient(circle at right 20%, #efe3d5 0%, transparent 25%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(246, 240, 232, 0.72);
+      border-bottom: 1px solid rgba(92, 78, 67, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 0;
+    }
+
+    .brand {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-links a {
+      padding: 10px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.45);
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      transform: translateY(-1px);
+      background: white;
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 56px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .card,
+    .project-card,
+    .contact-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-main {
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      min-height: 460px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -70px;
+      top: -70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(183,146,115,0.22), rgba(255,255,255,0));
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.8rem, 6vw, 5.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-subtitle {
+      max-width: 720px;
+      margin: 18px 0 0;
+      font-size: 1.08rem;
+      color: #5a4f46;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .hero-badges span {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      color: #5f554d;
+      font-size: 0.95rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .button-primary {
+      background: var(--accent-deep);
+      color: white;
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      background: #785b44;
+    }
+
+    .button-secondary {
+      background: rgba(255,255,255,0.78);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .button-secondary:hover {
+      transform: translateY(-2px);
+      background: white;
+    }
+
+    .hero-side {
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .portrait {
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(135deg, #e8d8c8, #f7f2ec);
+      border: 1px solid rgba(92, 78, 67, 0.08);
+      position: relative;
+    }
+
+    .portrait::before {
+      content: "Your Photo";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--accent-deep);
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .side-note {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      color: #64584d;
+      font-size: 0.96rem;
+    }
+
+    .section {
+      padding: 18px 0 10px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .about-grid,
+    .notes-grid,
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      padding: 32px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+    }
+
+    .stat-label {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .project-card {
+      border-radius: 28px;
+      padding: 26px;
+      transition: 0.28s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .project-tag {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .project-card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .project-card p {
+      color: #64584d;
+      margin: 12px 0 18px;
+    }
+
+    .project-link {
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+
+    .note-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .note-item {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+    }
+
+    .note-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .contact-card {
+      border-radius: var(--radius-xl);
+      padding: 32px;
+    }
+
+    .contact-links {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .contact-links a {
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      transition: 0.25s ease;
+    }
+
+    .contact-links a:hover {
+      transform: translateX(4px);
+      background: white;
+    }
+
+    footer {
+      padding: 30px 0 60px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .about-grid,
+      .notes-grid,
+      .contact-grid,
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .card,
+      .project-card,
+      .contact-card {
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#home" class="brand">Eloise</a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#notes">Notes</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<header>
-    <h1>Eloise</h1>
-    <p>Life Science Student | Creator | Montreal</p>
-</header>
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-main fade-up">
+          <div>
+            <p class="eyebrow">Personal Website</p>
+            <h1>Soft, polished,<br />and completely yours.</h1>
+            <p class="hero-subtitle">
+              Hi, I’m Eloise — a life science student, creator, and detail lover.
+              This is a warm, editorial-style personal website template for sharing
+              your projects, thoughts, aesthetic, and everything that feels like you.
+            </p>
+            <div class="hero-badges">
+              <span>McGill student</span>
+              <span>Science + creativity</span>
+              <span>Portfolio + blog</span>
+            </div>
+          </div>
 
-<section>
-    <h2>About Me</h2>
-    <p>
-    Hi! I'm Eloise. I study science at McGill University and
-    love baking, design, and building things.
-    </p>
-</section>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#projects">See My Work</a>
+            <a class="button button-secondary" href="#contact">Contact Me</a>
+          </div>
+        </div>
 
-<section>
-    <h2>Projects</h2>
-    <ul>
-        <li>Kitten Kitchen Baking Website</li>
-        <li>Malignant Hyperthermia Awareness Website</li>
-    </ul>
-</section>
+        <aside class="hero-side fade-up">
+          <div class="portrait"></div>
+          <div class="side-note">
+            Replace this block with your own photo, a quote, a short self-intro,
+            or even a mini moodboard screenshot.
+          </div>
+        </aside>
+      </div>
+    </section>
 
-<section>
-    <h2>Contact</h2>
-    <p>Email: hello@email.com</p>
-</section>
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="card fade-up">
+          <p class="eyebrow">About Me</p>
+          <h2 class="section-title">A personal corner for science, design, and everyday beauty.</h2>
+          <p class="section-desc">
+            You can use this section to introduce yourself naturally — what you study,
+            what you build, what kind of person you are, and what you care about.
+            The best personal websites feel confident, clear, and real.
+          </p>
+        </div>
 
+        <div class="card fade-up">
+          <p>
+            I’m someone who loves making things feel thoughtful and beautiful,
+            whether it’s a website, a recipe, a science project, or a visual idea.
+            I like soft aesthetics, clean structure, and details that make a page feel personal.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Based in</div>
+              <div class="stat-value">Montreal</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Studying</div>
+              <div class="stat-value">Life Sciences</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Style</div>
+              <div class="stat-value">Minimal + warm</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best use</div>
+              <div class="stat-value">Portfolio / Blog</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-header fade-up">
+          <div>
+            <p class="eyebrow">Projects</p>
+            <h2 class="section-title">Things you can showcase here</h2>
+          </div>
+          <p class="section-desc">
+            These are placeholder cards. Later, replace them with your real links and descriptions.
+          </p>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card fade-up">
+            <span class="project-tag">Creative Project</span>
+            <h3>Kitten Kitchen</h3>
+            <p>
+              A baking project space for recipes, notes, troubleshooting, and cozy kitchen experiments.
+            </p>
+            <a class="project-link" href="#">View project →</a>
+          </article>
+
+          <article class="project-card fade-up">
+            <span class="project-tag">Science Communication</span>
+            <h3>Malignant Hyperthermia Website</h3>
+            <p>
+              A science-focused project that explains a rare but important condition in a more accessible way.
+            </p>
+            <a class="project-link" href="#">View project →</a>
+          </article>
+
+          <article class="project-card fade-up">
+            <span class="project-tag">Lifestyle Archive</span>
+            <h3>Student Life in Montreal</h3>
+            <p>
+              A visual diary of study life, cafés, routines, reflections, and beautiful everyday moments.
+            </p>
+            <a class="project-link" href="#">View project →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="notes">
+      <div class="container notes-grid">
+        <div class="card fade-up">
+          <p class="eyebrow">Notes / Blog</p>
+          <h2 class="section-title">Add updates so the site feels alive.</h2>
+          <p class="section-desc">
+            Even short entries work: monthly reflections, travel plans, study routines,
+            favorite cafés, project progress, or thoughts you want to keep somewhere pretty.
+          </p>
+        </div>
+
+        <div class="card fade-up">
+          <div class="note-list">
+            <div class="note-item">
+              <strong>March Update</strong>
+              Built the first version of my personal website and started shaping its mood and identity.
+            </div>
+            <div class="note-item">
+              <strong>Current Focus</strong>
+              Balancing school, creative work, and building a life that feels both ambitious and beautiful.
+            </div>
+            <div class="note-item">
+              <strong>Coming Soon</strong>
+              Blog posts, a gallery, selected coursework, and a more detailed about page.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-card fade-up">
+          <p class="eyebrow">Contact</p>
+          <h2 class="section-title">Let’s stay connected.</h2>
+          <p class="section-desc">
+            You can place your email, Instagram, GitHub, Rednote, Xiaohongshu, or anything else here.
+            Keep it simple for now, then upgrade it later.
+          </p>
+        </div>
+
+        <div class="contact-card fade-up">
+          <div class="contact-links">
+            <a href="mailto:hello@email.com">Email — hello@email.com</a>
+            <a href="#">Instagram — @yourname</a>
+            <a href="#">GitHub — github.com/yourname</a>
+            <a href="#">Portfolio / Blog Link</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 Eloise. Made with calm colors, soft lines, and a little ambition.</div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+  </script>
 </body>
 </html>
